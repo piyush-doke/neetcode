@@ -1,0 +1,27 @@
+from collections import defaultdict
+
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        if len(s2) < len(s1):
+            return False
+        
+        counter = defaultdict(int)
+        for c in s1:
+            counter[c] += 1
+        
+        l, unseen = 0, len(s1)
+        for r in range(len(s2)):
+            counter[s2[r]] -= 1
+
+            if counter[s2[r]] >= 0:
+                unseen -= 1
+                if unseen == 0:
+                    return True
+
+            while counter[s2[r]] < 0:
+                if counter[s2[l]] >= 0:
+                    unseen += 1
+                counter[s2[l]] += 1
+                l += 1
+
+        return False
